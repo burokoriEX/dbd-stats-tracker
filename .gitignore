@@ -22,6 +22,9 @@
 hs_err_pid*
 replay_pid*
 
-# ===== あなたのツールのデータファイル（公開しない） =====
-dbd_history.txt
-dbd_killers.txt
+# コンパイル済みのゴミファイルを無視
+*.class
+
+# 自動生成されるデータファイルを無視
+DBD/dbd_history.txt
+DBD/dbd_killers.txt
