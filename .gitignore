@@ -1,17 +1,16 @@
-# Compiled class file
+# コンパイル済みクラスファイル
 *.class
 
-# Log file
+# ログファイル
 *.log
 
-# BlueJ files
+# BlueJファイル
 *.ctxt
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# Java (J2ME) 用モバイルツール
+*.mtj.tmp/
 
-# Package Files #
-*.jar
+# パッケージファイル（jar は使うので除外設定は削除）
 *.war
 *.nar
 *.ear
@@ -19,6 +18,10 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# 仮想マシンのクラッシュログ
 hs_err_pid*
 replay_pid*
+
+# ===== あなたのツールのデータファイル（公開しない） =====
+dbd_history.txt
+dbd_killers.txt
