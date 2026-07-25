@@ -18,11 +18,14 @@ Dead by Daylight のキラー戦績を記録・管理するための Java Swing 
 ## 📁 プロジェクト構成
 
 DBD/
+├─ run.bat             # プログラム起動
 ├─ src/                # ソースコード
 ├─ libs/               # 使用ライブラリ（JFreeChart / JCommon）
 └─ （データファイルは .gitignore により除外）
 
 ---
+
+run.batをダブルクリックすることで実行できます。
 
 ## ▶ 実行方法
 
