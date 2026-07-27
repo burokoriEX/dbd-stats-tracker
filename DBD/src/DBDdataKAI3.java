@@ -360,6 +360,7 @@ public class DBDdataKAI3 {
 		int totalMatches = history.size();
 		int totalKills = 0;
 		int totalHooks = 0;
+		int totalWins = 0;   // ★ 追加
 
 		Map<String, List<MatchResult>> killerStats = new HashMap<>();
 		Map<String, List<MatchResult>> dateStats = new HashMap<>();
@@ -367,21 +368,27 @@ public class DBDdataKAI3 {
 		for (MatchResult m : history) {
 			totalKills += m.getKillCount();
 			totalHooks += m.getHookCount();
+			 if (m.getKillCount() >= 3) totalWins++;  // ★ 追加
+		
 
 			killerStats.putIfAbsent(m.getKillerName(), new ArrayList<>());
 			killerStats.get(m.getKillerName()).add(m);
 
 			dateStats.putIfAbsent(m.getDate(), new ArrayList<>());
 			dateStats.get(m.getDate()).add(m);
+			
 		}
 
 		double avgKills = (double) totalKills / totalMatches;
 		double avgHooks = (double) totalHooks / totalMatches;
+		
+		double totalWinRate = ((double) totalWins / totalMatches) * 100;  // ★ 追加
 
 		sb.append("====== 【全体・通算戦績】 ======\n");
 		sb.append("総試合数　: ").append(totalMatches).append(" 試合\n");
 		sb.append("平均キル数: ").append(String.format("%.2f", avgKills)).append(" 人\n");
 		sb.append("平均フック: ").append(String.format("%.2f", avgHooks)).append(" 回\n\n");
+		sb.append("勝率(3K以上): ").append(String.format("%.1f", totalWinRate)).append("%\n\n");  // ★ 追加
 
 		sb.append("====== 【キラー別戦績】 ======\n");
 		for (Map.Entry<String, List<MatchResult>> entry : killerStats.entrySet()) {
