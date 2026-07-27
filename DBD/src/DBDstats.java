@@ -86,10 +86,7 @@ public class DBDstats {
 
 	    if (!Files.exists(path)) {
 	        killerList.addAll(List.of(
-	            "ダークロード", "リッチ", "金木", "ウェスカー", "ジェイソン",
-	            "トリックスター", "ナース", "スピリット", "アニマトロニクス",
-	            "セノバイト", "シェイプ", "レイス", "カニバル", "ネメシス",
-	            "ナイトメア", "リージョン"
+	           "トラッパー"
 	        ));
 	        saveKillers();
 	        return;
@@ -115,10 +112,6 @@ public class DBDstats {
 	        System.out.println("キラー一覧の保存エラー: " + e.getMessage());
 	    }
 	}
-
-
-
-	   
 
 
 	public static void main(String[] args) {
