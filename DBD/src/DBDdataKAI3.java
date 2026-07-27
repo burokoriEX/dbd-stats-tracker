@@ -282,8 +282,11 @@ public class DBDdataKAI3 {
 
 		JTabbedPane tabs = new JTabbedPane();
 		tabs.addTab("戦績一覧", scrollPane);
-		//		tabs.addTab("グラフ", createKillGraph());
+		tabs.addTab("キラー別戦績", createKillerStatsPanel());
+		tabs.addTab("日付別戦績", createDateStatsPanel());
 		tabs.addTab("日付折れ線グラフ", createDailyLineGraph());
+
+
 
 		frame.add(tabs, BorderLayout.CENTER);
 
@@ -339,6 +342,8 @@ public class DBDdataKAI3 {
 			String selectedDate = (String) dateFilterBox.getSelectedItem();
 			updateStatsDisplay(selectedDate);
 		});
+		
+		
 
 		btnShowAll.addActionListener(e -> updateStatsDisplayAll());
 
@@ -347,6 +352,95 @@ public class DBDdataKAI3 {
 
 		updateStatsDisplayAll(); // 初期表示
 	}
+	
+	private static JScrollPane createKillerStatsPanel() {
+
+	    JTextArea area = new JTextArea();
+	    area.setEditable(false);
+
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("====== 【キラー別戦績】 ======\n");
+
+	    Map<String, List<MatchResult>> killerStats = new HashMap<>();
+
+	    for (MatchResult m : history) {
+	        killerStats.putIfAbsent(m.getKillerName(), new ArrayList<>());
+	        killerStats.get(m.getKillerName()).add(m);
+	    }
+
+	    for (Map.Entry<String, List<MatchResult>> entry : killerStats.entrySet()) {
+	        String killerName = entry.getKey();
+	        List<MatchResult> matches = entry.getValue();
+
+	        int kMatches = matches.size();
+	        int kKills = 0;
+	        int kHooks = 0;
+	        int winGames = 0;
+
+	        for (MatchResult m : matches) {
+	            kKills += m.getKillCount();
+	            kHooks += m.getHookCount();
+	            if (m.getKillCount() >= 3) winGames++;
+	        }
+
+	        double kAvgKills = (double) kKills / kMatches;
+	        double kAvgHooks = (double) kHooks / kMatches;
+	        double winRate = ((double) winGames / kMatches) * 100;
+
+	        sb.append("[").append(killerName).append("] ").append(kMatches).append("試合\n");
+	        sb.append("  ➔ 平均キル: ").append(String.format("%.2f", kAvgKills)).append("人")
+	          .append(" | 平均フック: ").append(String.format("%.2f", kAvgHooks)).append("回")
+	          .append(" | 勝率(3K以上): ").append(String.format("%.1f", winRate)).append("%\n");
+	    }
+
+	    area.setText(sb.toString());
+	    return new JScrollPane(area);
+	}
+
+	private static JScrollPane createDateStatsPanel() {
+
+	    JTextArea area = new JTextArea();
+	    area.setEditable(false);
+
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("====== 【日付ごとの戦績】 ======\n");
+
+	    Map<String, List<MatchResult>> dateStats = new HashMap<>();
+
+	    for (MatchResult m : history) {
+	        dateStats.putIfAbsent(m.getDate(), new ArrayList<>());
+	        dateStats.get(m.getDate()).add(m);
+	    }
+
+	    for (Map.Entry<String, List<MatchResult>> entry : dateStats.entrySet()) {
+	        String date = entry.getKey();
+	        List<MatchResult> matches = entry.getValue();
+
+	        int dMatches = matches.size();
+	        int dKills = 0;
+	        int dHooks = 0;
+	        int dWins = 0;
+
+	        for (MatchResult m : matches) {
+	            dKills += m.getKillCount();
+	            dHooks += m.getHookCount();
+	            if (m.getKillCount() >= 3) dWins++;
+	        }
+
+	        double avgKills = (double) dKills / dMatches;
+	        double avgHooks = (double) dHooks / dMatches;
+	        double winRate = ((double) dWins / dMatches) * 100;
+
+	        sb.append("[").append(date).append("] ").append(dMatches).append("試合\n");
+	        sb.append("  ➔ 平均キル: ").append(String.format("%.2f", avgKills)).append("人")
+	          .append(" | 平均フック: ").append(String.format("%.2f", avgHooks)).append("回")
+	          .append(" | 勝率(3K以上): ").append(String.format("%.1f", winRate)).append("%\n");
+	    }
+
+	    area.setText(sb.toString());
+	    return new JScrollPane(area);
+	}
+
 
 	// ★ 全体表示
 	private static void updateStatsDisplayAll() {
