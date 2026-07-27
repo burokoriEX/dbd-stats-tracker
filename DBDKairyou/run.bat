@@ -1,33 +1,43 @@
 @echo off
 chcp 65001 > nul
 
-echo --------------------------------------------------
-echo  DbD統計トラッカー を起動しています...
-echo --------------------------------------------------
+rem ★ run.bat の場所をカレントにする（重要）
+cd /d "%~dp0"
 
-echo 【1/2】 プログラムをコンパイル中...
+echo ================================
+echo   DbD 統計トラッカー 起動
+echo ================================
 
-rem ★ src 内の全 Java ファイルをコンパイル
-javac -cp "./libs/*" ./src/*.java
-
+echo --- Java の動作チェック ---
+javac -version
 if %errorlevel% neq 0 (
-    echo.
-    echo [エラー] コンパイルに失敗しました。
-    echo コードにエラーがないか確認してください。
-    echo Java(JDK 17以上)がインストールされているかも確認してください。
-    echo.
+    echo [エラー] javac が実行できません。
     pause
     exit /b
 )
 
-echo 【2/2】 アプリケーションを起動中...
-
-rem ★ libs と src をクラスパスに追加
-java -cp "./libs/*;./src" DBDStats
-
+java -version
 if %errorlevel% neq 0 (
-    echo.
-    echo [エラー] 起動に失敗しました。
-    echo.
+    echo [エラー] java が実行できません。
     pause
+    exit /b
 )
+
+echo --- コンパイル開始 ---
+javac -cp "libs/*" src/*.java
+if %errorlevel% neq 0 (
+    echo [エラー] コンパイルに失敗しました。
+    pause
+    exit /b
+)
+
+echo --- アプリケーション起動 ---
+java -cp "libs/*;src" DBDstats
+if %errorlevel% neq 0 (
+    echo [エラー] アプリケーション起動に失敗しました。
+    pause
+    exit /b
+)
+
+rem ★ 正常終了時は止めない
+exit /b
