@@ -45,8 +45,13 @@ public class GraphBuilder {
             }
 
             double avgKills = totalKills / matches.size();
-            dataset.addValue(avgKills, "平均キル数", date);
+
+            // ★ 月日だけ表示する
+            String shortDate = date.substring(5);  // "MM-DD"
+
+            dataset.addValue(avgKills, "平均キル数", shortDate);
         }
+
 
         // グラフ生成
         JFreeChart chart = ChartFactory.createLineChart(
