@@ -18,7 +18,7 @@ jobs:
         distribution: 'temurin'
 
     - name: Build with Maven
-      run: mvn -B package --file DBDKairyuu/pom.xml
+      run: mvn -B package --file DBDKairyu/pom.xml
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
